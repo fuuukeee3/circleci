@@ -16,10 +16,6 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - hold:
-          type: approval
-          requires:
-            - build
       - deploy:
           requires:
-            - hold
+            - build

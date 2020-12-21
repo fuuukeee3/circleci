@@ -1,9 +1,25 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/node:lts
+      - image: busybox
     steps:
-      - checkout
-      - run: yarn install
-      - run: yarn test
+      - run: echo "build job"
+  deploy:
+    docker:
+      - image: busybox
+    steps:
+      - run: echo "deploy job"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - hold:
+          type: approval
+          requires:
+            - build
+      - deploy:
+          requires:
+            - hold
